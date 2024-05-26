@@ -3,8 +3,6 @@ import { Product } from "./product.model";
 
 // API function to add new product to the database
 const createProduct = async (data: TProduct) => {
-    console.log(data);
-    
     const result = await Product.create(data);
     return result
 }
@@ -21,9 +19,17 @@ const getAProduct = async (id: string) => {
     return result
 }
 
+// API function to update a product
+const updateAProduct = async (id: string, data: TProduct) => {
+    const result = await Product.replaceOne({_id: id}, data);
+    
+    return result
+}
+
 
 export const ProductServices = {
     createProduct,
     getAllProducts,
-    getAProduct
+    getAProduct,
+    updateAProduct
 }

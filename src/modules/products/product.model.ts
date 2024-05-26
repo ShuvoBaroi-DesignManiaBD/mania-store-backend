@@ -5,13 +5,13 @@ import { TProduct, TProductModel } from './product.interface';
 const variantSchema = new Schema({
   type: { type: String, required: true },
   value: { type: String, required: true },
-});
+}, { _id: false });
 
 // Inventory Schema
 const inventorySchema = new Schema({
   quantity: { type: Number, required: true },
   inStock: { type: Boolean, required: true },
-});
+}, { _id: false });
 
 // Product Schema
 const productSchema = new Schema<TProduct, TProductModel>({

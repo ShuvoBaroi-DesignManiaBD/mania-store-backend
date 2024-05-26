@@ -26,7 +26,6 @@ const createProduct = async (req: Request, res: Response) => {
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const result = await ProductServices.getAllProducts();
-    console.log(result);
     
 
     res.status(200).json({
@@ -34,7 +33,7 @@ const getAllProducts = async (req: Request, res: Response) => {
       message: "Products fetched successfully!",
       data: result,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     res.status(500).json({
       success: false,
       message: 'Could not fetch products!',
@@ -43,14 +42,11 @@ const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
-// API Controller for getting all products from the database
+// API Controller for getting a product from the database
 const getAProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
-    console.log(productId);
-    
     const result = await ProductServices.getAProduct(productId);
-    console.log(result);
     
 
     res.status(200).json({
@@ -58,7 +54,7 @@ const getAProduct = async (req: Request, res: Response) => {
       message: "The product fetched successfully!",
       data: result,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     res.status(500).json({
       success: false,
       message: 'Could not fetch the product!',
@@ -67,8 +63,31 @@ const getAProduct = async (req: Request, res: Response) => {
   }
 };
 
+// API Controller for getting all products from the database
+const updateAProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const data = req.body;
+    
+    const result = await ProductServices.updateAProduct(productId, data);
+
+    res.status(200).json({
+      success: true,
+      message: "The product updated successfully!",
+      data: result,
+    });
+  } catch (err: unknown) {
+    res.status(500).json({
+      success: false,
+      message: 'Could not able to update the product!',
+      error: err,
+    });
+  }
+};
+
 export const ProductControllers = {
     createProduct,
     getAllProducts,
-    getAProduct
+    getAProduct,
+    updateAProduct
   };
