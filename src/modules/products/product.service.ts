@@ -26,10 +26,17 @@ const updateAProduct = async (id: string, data: TProduct) => {
     return result
 }
 
+// API function to delete a product
+const deleteAProduct = async (id: string) => {
+    const result = await Product.deleteOne({_id: id});
+    return result
+}
+
 
 export const ProductServices = {
     createProduct,
     getAllProducts,
     getAProduct,
-    updateAProduct
+    updateAProduct,
+    deleteAProduct
 }

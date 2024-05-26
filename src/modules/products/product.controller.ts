@@ -63,7 +63,7 @@ const getAProduct = async (req: Request, res: Response) => {
   }
 };
 
-// API Controller for getting all products from the database
+// API Controller for updating a product data
 const updateAProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
@@ -85,9 +85,30 @@ const updateAProduct = async (req: Request, res: Response) => {
   }
 };
 
+// API Controller for deleting a specific product from the database
+const deleteAProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const result = await ProductServices.deleteAProduct(productId);
+
+    res.status(200).json({
+      success: true,
+      message: "The product deleted successfully!",
+      data: result,
+    });
+  } catch (err: unknown) {
+    res.status(500).json({
+      success: false,
+      message: 'Could not able to delete the product!',
+      error: err,
+    });
+  }
+};
+
 export const ProductControllers = {
     createProduct,
     getAllProducts,
     getAProduct,
-    updateAProduct
+    updateAProduct,
+    deleteAProduct
   };
