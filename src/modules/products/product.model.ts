@@ -24,4 +24,6 @@ const productSchema = new Schema<TProduct, TProductModel>({
   inventory: { type: inventorySchema, required: true },
 });
 
+// Search index for searching to all the strings by query term
+productSchema.index({'$**': 'text'});
 export const Product = model<TProduct, TProductModel>('Product', productSchema);

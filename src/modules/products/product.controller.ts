@@ -24,21 +24,39 @@ const createProduct = async (req: Request, res: Response) => {
 
 // API Controller for getting all products from the database
 const getAllProducts = async (req: Request, res: Response) => {
-  try {
-    const result = await ProductServices.getAllProducts();
-    
+  const query = req.query.searchTerm;
 
-    res.status(200).json({
-      success: true,
-      message: "Products fetched successfully!",
-      data: result,
-    });
-  } catch (err: unknown) {
-    res.status(500).json({
-      success: false,
-      message: 'Could not fetch products!',
-      error: err,
-    });
+  if(query){
+    try {
+      const result = await ProductServices.getAllProducts(query as string);
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term ${query} fetched successfully!`,
+        data: result,
+      });
+    } catch (err: unknown) {
+      res.status(500).json({
+        success: false,
+        message: `No products found contaning your search term!`,
+        error: err,
+      });
+    }
+  }else{
+    try {
+      const result = await ProductServices.getAllProducts('');
+  
+      res.status(200).json({
+        success: true,
+        message: "Products fetched successfully!",
+        data: result,
+      });
+    } catch (err: unknown) {
+      res.status(500).json({
+        success: false,
+        message: 'Could not fetch products!',
+        error: err,
+      });
+    }
   }
 };
 
@@ -93,8 +111,8 @@ const deleteAProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: "The product deleted successfully!",
-      data: result,
+      message: "Product deleted successfully!",
+      data: null,
     });
   } catch (err: unknown) {
     res.status(500).json({
@@ -104,6 +122,7 @@ const deleteAProduct = async (req: Request, res: Response) => {
     });
   }
 };
+
 
 export const ProductControllers = {
     createProduct,
