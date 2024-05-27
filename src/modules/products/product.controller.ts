@@ -28,7 +28,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 
   if(query){
     try {
-      const result = await ProductServices.getAllProducts(query as string);
+      const result = await ProductServices.searchProductsByTerms(query as string);
       res.status(200).json({
         success: true,
         message: `Products matching search term ${query} fetched successfully!`,
@@ -43,7 +43,7 @@ const getAllProducts = async (req: Request, res: Response) => {
     }
   }else{
     try {
-      const result = await ProductServices.getAllProducts('');
+      const result = await ProductServices.getAllProducts();
   
       res.status(200).json({
         success: true,

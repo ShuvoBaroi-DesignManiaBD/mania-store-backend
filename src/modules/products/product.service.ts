@@ -8,14 +8,15 @@ const createProduct = async (data: TProduct) => {
 };
 
 // API function to get all the products from the database
-const getAllProducts = async (term: string) => {
-  if (term === '') {
+const getAllProducts = async () => {
     const result = await Product.find();
     return result;
-  } else {
+};
+
+// API function to search products by a term
+const searchProductsByTerms = async (term: string) => {
     const result = await Product.find({ $text: { $search: term } });
     return result;
-  }
 };
 
 // API function to get all the products from the database
@@ -43,5 +44,6 @@ export const ProductServices = {
   getAllProducts,
   getAProduct,
   updateAProduct,
-  deleteAProduct
+  deleteAProduct,
+  searchProductsByTerms
 };
