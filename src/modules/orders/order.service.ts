@@ -9,8 +9,8 @@ const createOrder = async (data: TOrder) => {
 
 // API function to get all the orders from the database
 const getAllOrders = async () => {
-  const result = await Order.find();
-  return result;
+  const orders = await Order.find();
+  return orders;
 };
 
 // API function to search orders by a email

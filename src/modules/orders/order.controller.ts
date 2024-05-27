@@ -27,18 +27,24 @@ const getAllOrders = async (req: Request, res: Response) => {
 
   if (email) {
     try {
-      const result = await OrderServices.searchOrdersByEmail(
-        email as string,
-      );
-      res.status(200).json({
-        success: true,
-        message: `Orders fetched successfully for user email!`,
-        data: result,
-      });
+      const result = await OrderServices.searchOrdersByEmail(email as string);
+
+      if (result.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'Order not found',
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: `Orders fetched successfully for user email!`,
+          data: result,
+        });
+      }
     } catch (err: unknown) {
       res.status(500).json({
         success: false,
-        message: `No orders found contaning your search term!`,
+        message: `Something went wrong!`,
         error: err,
       });
     }
@@ -46,15 +52,22 @@ const getAllOrders = async (req: Request, res: Response) => {
     try {
       const result = await OrderServices.getAllOrders();
 
-      res.status(200).json({
-        success: true,
-        message: 'Orders fetched successfully!!',
-        data: result,
-      });
+      if (result.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: 'Order not found',
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          message: 'Orders fetched successfully!!',
+          data: result,
+        });
+      }
     } catch (err: unknown) {
       res.status(500).json({
         success: false,
-        message: 'Could not fetch orders!',
+        message: 'Something went wrong!',
         error: err,
       });
     }
@@ -63,5 +76,5 @@ const getAllOrders = async (req: Request, res: Response) => {
 
 export const OrderControllers = {
   createOrder,
-  getAllOrders
+  getAllOrders,
 };
