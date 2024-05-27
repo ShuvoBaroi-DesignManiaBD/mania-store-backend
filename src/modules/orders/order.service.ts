@@ -13,7 +13,14 @@ const getAllOrders = async () => {
   return result;
 };
 
+// API function to search orders by a email
+const searchOrdersByEmail = async (email: string) => {
+  const result = await Order.find({ email });
+  return result;
+};
+
 export const OrderServices = {
   createOrder,
   getAllOrders,
+  searchOrdersByEmail
 };

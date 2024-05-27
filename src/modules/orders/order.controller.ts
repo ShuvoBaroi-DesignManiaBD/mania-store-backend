@@ -23,11 +23,11 @@ const createOrder = async (req: Request, res: Response) => {
 
 // API Controller for getting all orders from the database
 const getAllOrders = async (req: Request, res: Response) => {
-  const email = req.query.searchTerm;
+  const email = req.query.email;
 
   if (email) {
     try {
-      const result = await OrderServices.getAllOrders(
+      const result = await OrderServices.searchOrdersByEmail(
         email as string,
       );
       res.status(200).json({
