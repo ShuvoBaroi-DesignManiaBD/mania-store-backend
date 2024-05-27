@@ -1,10 +1,19 @@
 import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
+import { ProductServices } from '../products/product.service';
+import { TProduct } from '../products/product.interface';
 
 // API Controller for adding new orders to the database
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
+    const pullProduct = (await ProductServices.getAProduct(orderData.productId)) as TProduct;
+    if (pullProduct?.inventory?.quantity < orderData?.quantity){
+      return res.status(409).json({
+        success: false,
+        message: 'Insufficient quantity available in inventory'
+      });
+    } 
     const result = await OrderServices.createOrder(orderData);
 
     res.status(200).json({

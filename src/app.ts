@@ -11,7 +11,7 @@ app.use("/api/products", ProductRoutes); // Product route
 app.use("/api/orders", OrderRoutes); // Order route
 
 // Not Found Routes (404)
-app.use((req, res, next) => {
+app.use((req, res,) => {
   res.status(404).json({
       success: false,
       message: "Route not found"
