@@ -10,6 +10,14 @@ app.use(express.json());
 app.use("/api/products", ProductRoutes); // Product route
 app.use("/api/orders", OrderRoutes); // Order route
 
+// Not Found Routes (404)
+app.use((req, res, next) => {
+  res.status(404).json({
+      success: false,
+      message: "Route not found"
+  });
+});
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Server is responding');
 });
