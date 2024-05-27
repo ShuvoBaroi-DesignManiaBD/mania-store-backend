@@ -1,4 +1,5 @@
-import { TProduct } from './product.interface';
+import { TOrder } from '../orders/order.interface';
+import { TInventory, TProduct } from './product.interface';
 import { Product } from './product.model';
 
 // API function to add new product to the database
@@ -38,6 +39,14 @@ const deleteAProduct = async (id: string) => {
   return result;
 };
 
+// API function to update a product
+const updateProductInventory = async (order: TOrder, inventoryData: TInventory) => {
+  const newProductQuantity = inventoryData.quantity - order.quantity;
+  const updatedInventory = {quantity: newProductQuantity, inStock: (newProductQuantity === 0) ? false : true};
+  const result = await Product.findOneAndUpdate({ _id: order.productId }, {inventory:updatedInventory});
+  return result;
+};
+
 
 export const ProductServices = {
   createProduct,
@@ -45,5 +54,6 @@ export const ProductServices = {
   getAProduct,
   updateAProduct,
   deleteAProduct,
-  searchProductsByTerms
+  searchProductsByTerms,
+  updateProductInventory
 };
