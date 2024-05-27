@@ -21,7 +21,47 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+// API Controller for getting all orders from the database
+const getAllOrders = async (req: Request, res: Response) => {
+  const email = req.query.searchTerm;
+
+  if (email) {
+    try {
+      const result = await OrderServices.getAllOrders(
+        email as string,
+      );
+      res.status(200).json({
+        success: true,
+        message: `Orders fetched successfully for user email!`,
+        data: result,
+      });
+    } catch (err: unknown) {
+      res.status(500).json({
+        success: false,
+        message: `No orders found contaning your search term!`,
+        error: err,
+      });
+    }
+  } else {
+    try {
+      const result = await OrderServices.getAllOrders();
+
+      res.status(200).json({
+        success: true,
+        message: 'Orders fetched successfully!!',
+        data: result,
+      });
+    } catch (err: unknown) {
+      res.status(500).json({
+        success: false,
+        message: 'Could not fetch orders!',
+        error: err,
+      });
+    }
+  }
+};
 
 export const OrderControllers = {
-    createOrder
-  };
+  createOrder,
+  getAllOrders
+};

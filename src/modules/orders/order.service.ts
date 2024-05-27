@@ -1,5 +1,5 @@
-import { TOrder} from './order.interface';
-import { Order} from './order.model';
+import { TOrder } from './order.interface';
+import { Order } from './order.model';
 
 // API function to add new order to the database
 const createOrder = async (data: TOrder) => {
@@ -7,7 +7,13 @@ const createOrder = async (data: TOrder) => {
   return result;
 };
 
+// API function to get all the orders from the database
+const getAllOrders = async () => {
+  const result = await Order.find();
+  return result;
+};
 
 export const OrderServices = {
-  createOrder
+  createOrder,
+  getAllOrders,
 };
