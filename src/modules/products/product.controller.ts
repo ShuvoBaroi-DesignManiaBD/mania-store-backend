@@ -1,18 +1,20 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
+import productSchema from './product.validation';
 
 // API Controller for adding new products to the database
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const result = await ProductServices.createProduct(productData);
+    const zodParsedData = productSchema.parse(productData); //Validating the given data by ZOD
+    const result = await ProductServices.createProduct(zodParsedData);
 
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
       data: result,
     });
-  } catch (err: unknown) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong!',
@@ -86,8 +88,8 @@ const updateAProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
     const data = req.body;
-    
-    const result = await ProductServices.updateAProduct(productId, data);
+    const zodParsedData = productSchema.parse(data); //Validating the given data by ZOD
+    const result = await ProductServices.updateAProduct(productId, zodParsedData);
 
     res.status(200).json({
       success: true,
