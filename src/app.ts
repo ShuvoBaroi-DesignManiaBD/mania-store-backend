@@ -10,6 +10,10 @@ app.use(express.json());
 app.use("/api/products", ProductRoutes); // Product route
 app.use("/api/orders", OrderRoutes); // Order route
 
+app.get('/', (req: Request, res: Response) => {
+  res.send('Server is responding');
+});
+
 // Not Found Routes (404)
 app.use((req, res,) => {
   res.status(404).json({
@@ -18,8 +22,5 @@ app.use((req, res,) => {
   });
 });
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Server is responding');
-});
 
 export default app;
