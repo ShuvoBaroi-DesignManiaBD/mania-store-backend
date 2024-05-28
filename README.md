@@ -1,5 +1,5 @@
-```markdown
-# Mania Store
+
+## Mania Store
 
 Mania Store is a backend application built with Express, TypeScript, and Mongoose. This project follows an industry-standard modular pattern for managing routes and functionalities.
 
