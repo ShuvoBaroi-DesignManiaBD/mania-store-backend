@@ -25,7 +25,7 @@ const createProduct = async (req: Request, res: Response) => {
 
 // API Controller for getting all products from the database
 const getAllProducts = async (req: Request, res: Response) => {
-  const query = req.query.searchTerm;
+  const query = req.query.searchTerm || req.query.searchterm;
 
   if (query) {
     try {
