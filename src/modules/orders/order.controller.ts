@@ -2,27 +2,29 @@ import { Request, Response } from 'express';
 import { OrderServices } from './order.service';
 import { ProductServices } from '../products/product.service';
 import { TProduct } from '../products/product.interface';
+import orderValidationSchema from './order.validation';
 
 // API Controller for adding new orders to the database
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
-    const pullProduct = (await ProductServices.getAProduct(orderData.productId)) as TProduct;
-    if (pullProduct?.inventory?.quantity < orderData?.quantity){
+    const zodParsedData = orderValidationSchema.parse(orderData); //Validating the given data by ZOD
+    const pullProduct = (await ProductServices.getAProduct(zodParsedData.productId)) as TProduct;
+    if (pullProduct?.inventory?.quantity < zodParsedData?.quantity){
       return res.status(409).json({
         success: false,
         message: 'Insufficient quantity available in inventory'
       });
     }; 
-    const result = await OrderServices.createOrder(orderData);
-    ProductServices.updateProductInventory(orderData, pullProduct.inventory);
+    const result = await OrderServices.createOrder(zodParsedData);
+    ProductServices.updateProductInventory(zodParsedData, pullProduct.inventory);
     
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
       data: result,
     });
-  } catch (err: unknown) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong!',

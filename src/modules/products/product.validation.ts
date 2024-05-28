@@ -1,27 +1,26 @@
 import { z } from 'zod';
 
 // Variant validation schema
-const variantSchema = z.object({
+const variantValidationSchema = z.object({
   type: z.string(),
   value: z.string(),
 });
 
 // Inventory validation schema
-const inventorySchema = z.object({
+const inventoryValidationSchema = z.object({
   quantity: z.number(),
   inStock: z.boolean(),
 });
 
 // Product validation schema
-const productSchema = z.object({
+const productValidationSchema = z.object({
   name: z.string(),
   description: z.string(),
   price: z.number(),
   category: z.string(),
   tags: z.array(z.string()),
-  variants: z.array(variantSchema),
-  inventory: inventorySchema,
+  variants: z.array(variantValidationSchema),
+  inventory: inventoryValidationSchema,
 });
 
-
-export default productSchema;
+export default productValidationSchema;

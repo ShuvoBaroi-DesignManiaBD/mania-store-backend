@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
-import productSchema from './product.validation';
+import productValidationSchema from './product.validation';
 
 // API Controller for adding new products to the database
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const zodParsedData = productSchema.parse(productData); //Validating the given data by ZOD
+    const zodParsedData = productValidationSchema.parse(productData); //Validating the given data by ZOD
     const result = await ProductServices.createProduct(zodParsedData);
 
     res.status(200).json({
@@ -23,14 +23,15 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-
 // API Controller for getting all products from the database
 const getAllProducts = async (req: Request, res: Response) => {
   const query = req.query.searchTerm;
 
-  if(query){
+  if (query) {
     try {
-      const result = await ProductServices.searchProductsByTerms(query as string);
+      const result = await ProductServices.searchProductsByTerms(
+        query as string,
+      );
       res.status(200).json({
         success: true,
         message: `Products matching search term ${query} fetched successfully!`,
@@ -43,13 +44,13 @@ const getAllProducts = async (req: Request, res: Response) => {
         error: err,
       });
     }
-  }else{
+  } else {
     try {
       const result = await ProductServices.getAllProducts();
-  
+
       res.status(200).json({
         success: true,
-        message: "Products fetched successfully!",
+        message: 'Products fetched successfully!',
         data: result,
       });
     } catch (err: unknown) {
@@ -67,11 +68,10 @@ const getAProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
     const result = await ProductServices.getAProduct(productId);
-    
 
     res.status(200).json({
       success: true,
-      message: "The product fetched successfully!",
+      message: 'The product fetched successfully!',
       data: result,
     });
   } catch (err: unknown) {
@@ -88,12 +88,15 @@ const updateAProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;
     const data = req.body;
-    const zodParsedData = productSchema.parse(data); //Validating the given data by ZOD
-    const result = await ProductServices.updateAProduct(productId, zodParsedData);
+    const zodParsedData = productValidationSchema.parse(data); //Validating the given data by ZOD
+    const result = await ProductServices.updateAProduct(
+      productId,
+      zodParsedData,
+    );
 
     res.status(200).json({
       success: true,
-      message: "The product updated successfully!",
+      message: 'The product updated successfully!',
       data: result,
     });
   } catch (err: unknown) {
@@ -113,7 +116,7 @@ const deleteAProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: "Product deleted successfully!",
+      message: 'Product deleted successfully!',
       data: null,
     });
   } catch (err: unknown) {
@@ -125,11 +128,10 @@ const deleteAProduct = async (req: Request, res: Response) => {
   }
 };
 
-
 export const ProductControllers = {
-    createProduct,
-    getAllProducts,
-    getAProduct,
-    updateAProduct,
-    deleteAProduct
-  };
+  createProduct,
+  getAllProducts,
+  getAProduct,
+  updateAProduct,
+  deleteAProduct,
+};
